@@ -1,2 +1,2 @@
-# CourseWorkNPRG031
+# CourseWorkNPRG030
 MFF UK 
