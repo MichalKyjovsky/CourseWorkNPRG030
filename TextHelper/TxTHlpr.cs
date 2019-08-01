@@ -16,10 +16,10 @@ using System.Drawing.Printing;
 
 namespace TextHelper
 {
-    public partial class Form1 : Form
+    public partial class TxTHlpr : Form
     {
         public static int pocitadlo; 
-        public Form1()
+        public TxTHlpr()
         {
             InitializeComponent();
             this.ActiveControl = TextBoxInterface;
