@@ -88,6 +88,9 @@
             this.labelSearch = new System.Windows.Forms.Label();
             this.findLabel = new System.Windows.Forms.Label();
             this.replaaceLabel = new System.Windows.Forms.Label();
+            this.passwd2encdTextbox = new System.Windows.Forms.TextBox();
+            this.encodeButton = new System.Windows.Forms.Button();
+            this.passwd2encdLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -102,7 +105,7 @@
             this.searchToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(801, 26);
+            this.menuStrip1.Size = new System.Drawing.Size(890, 26);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -346,7 +349,7 @@
             this.bFont});
             this.toolStrip1.Location = new System.Drawing.Point(0, 26);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(801, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(890, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -477,9 +480,9 @@
             this.statusStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(252)))), ((int)(((byte)(169)))));
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 462);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 504);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(801, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(890, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -502,7 +505,7 @@
             this.toolStrip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(252)))), ((int)(((byte)(169)))));
             this.toolStrip2.Location = new System.Drawing.Point(0, 51);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(801, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(890, 25);
             this.toolStrip2.TabIndex = 11;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -518,18 +521,18 @@
             // findBox
             // 
             this.findBox.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.findBox.Location = new System.Drawing.Point(292, 54);
+            this.findBox.Location = new System.Drawing.Point(477, 42);
             this.findBox.Name = "findBox";
-            this.findBox.Size = new System.Drawing.Size(141, 20);
+            this.findBox.Size = new System.Drawing.Size(100, 20);
             this.findBox.TabIndex = 13;
             this.findBox.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // replaceBox
             // 
             this.replaceBox.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.replaceBox.Location = new System.Drawing.Point(512, 54);
+            this.replaceBox.Location = new System.Drawing.Point(682, 47);
             this.replaceBox.Name = "replaceBox";
-            this.replaceBox.Size = new System.Drawing.Size(141, 20);
+            this.replaceBox.Size = new System.Drawing.Size(100, 20);
             this.replaceBox.TabIndex = 14;
             this.replaceBox.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
@@ -538,9 +541,9 @@
             this.replaceButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.replaceButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.replaceButton.Font = new System.Drawing.Font("Palatino Linotype", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.replaceButton.Location = new System.Drawing.Point(659, 52);
+            this.replaceButton.Location = new System.Drawing.Point(788, 42);
             this.replaceButton.Name = "replaceButton";
-            this.replaceButton.Size = new System.Drawing.Size(102, 23);
+            this.replaceButton.Size = new System.Drawing.Size(83, 28);
             this.replaceButton.TabIndex = 18;
             this.replaceButton.Text = "Replace";
             this.replaceButton.UseVisualStyleBackColor = false;
@@ -563,7 +566,7 @@
             this.TextBoxInterface.ForeColor = System.Drawing.Color.Black;
             this.TextBoxInterface.Location = new System.Drawing.Point(0, 76);
             this.TextBoxInterface.Name = "TextBoxInterface";
-            this.TextBoxInterface.Size = new System.Drawing.Size(801, 386);
+            this.TextBoxInterface.Size = new System.Drawing.Size(890, 428);
             this.TextBoxInterface.TabIndex = 19;
             this.TextBoxInterface.Text = "";
             this.TextBoxInterface.MouseEnter += new System.EventHandler(this.Form1_Load);
@@ -574,9 +577,9 @@
             this.wikiButton.Font = new System.Drawing.Font("Palatino Linotype", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.wikiButton.Image = ((System.Drawing.Image)(resources.GetObject("wikiButton.Image")));
             this.wikiButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.wikiButton.Location = new System.Drawing.Point(659, 22);
+            this.wikiButton.Location = new System.Drawing.Point(788, 8);
             this.wikiButton.Name = "wikiButton";
-            this.wikiButton.Size = new System.Drawing.Size(102, 27);
+            this.wikiButton.Size = new System.Drawing.Size(83, 28);
             this.wikiButton.TabIndex = 20;
             this.wikiButton.Text = "Wiki ";
             this.wikiButton.UseVisualStyleBackColor = false;
@@ -584,9 +587,9 @@
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(512, 26);
+            this.textBox4.Location = new System.Drawing.Point(682, 16);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(141, 20);
+            this.textBox4.Size = new System.Drawing.Size(100, 20);
             this.textBox4.TabIndex = 21;
             // 
             // printPreviewDialog1
@@ -618,7 +621,7 @@
             this.findLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(252)))), ((int)(((byte)(169)))));
             this.findLabel.Font = new System.Drawing.Font("Palatino Linotype", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.findLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.findLabel.Location = new System.Drawing.Point(250, 54);
+            this.findLabel.Location = new System.Drawing.Point(435, 47);
             this.findLabel.Name = "findLabel";
             this.findLabel.Size = new System.Drawing.Size(36, 18);
             this.findLabel.TabIndex = 23;
@@ -630,18 +633,54 @@
             this.replaaceLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(252)))), ((int)(((byte)(169)))));
             this.replaaceLabel.Font = new System.Drawing.Font("Palatino Linotype", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.replaaceLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.replaaceLabel.Location = new System.Drawing.Point(450, 55);
+            this.replaaceLabel.Location = new System.Drawing.Point(610, 47);
             this.replaaceLabel.Name = "replaaceLabel";
             this.replaaceLabel.Size = new System.Drawing.Size(56, 18);
             this.replaaceLabel.TabIndex = 24;
             this.replaaceLabel.Text = "Replace";
+            // 
+            // passwd2encdTextbox
+            // 
+            this.passwd2encdTextbox.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.passwd2encdTextbox.Location = new System.Drawing.Point(477, 16);
+            this.passwd2encdTextbox.Name = "passwd2encdTextbox";
+            this.passwd2encdTextbox.Size = new System.Drawing.Size(100, 20);
+            this.passwd2encdTextbox.TabIndex = 26;
+            // 
+            // encodeButton
+            // 
+            this.encodeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.encodeButton.Font = new System.Drawing.Font("Palatino Linotype", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.encodeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.encodeButton.Location = new System.Drawing.Point(583, 11);
+            this.encodeButton.Name = "encodeButton";
+            this.encodeButton.Size = new System.Drawing.Size(83, 28);
+            this.encodeButton.TabIndex = 28;
+            this.encodeButton.Text = "Submit";
+            this.encodeButton.UseVisualStyleBackColor = false;
+            this.encodeButton.Click += new System.EventHandler(this.Button1_Click);
+            // 
+            // passwd2encdLabel
+            // 
+            this.passwd2encdLabel.AutoSize = true;
+            this.passwd2encdLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(252)))), ((int)(((byte)(169)))));
+            this.passwd2encdLabel.Font = new System.Drawing.Font("Palatino Linotype", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.passwd2encdLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.passwd2encdLabel.Location = new System.Drawing.Point(342, 16);
+            this.passwd2encdLabel.Name = "passwd2encdLabel";
+            this.passwd2encdLabel.Size = new System.Drawing.Size(129, 18);
+            this.passwd2encdLabel.TabIndex = 29;
+            this.passwd2encdLabel.Text = "Password to encode";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(244)))), ((int)(((byte)(220)))));
-            this.ClientSize = new System.Drawing.Size(801, 484);
+            this.ClientSize = new System.Drawing.Size(890, 526);
+            this.Controls.Add(this.passwd2encdLabel);
+            this.Controls.Add(this.encodeButton);
+            this.Controls.Add(this.passwd2encdTextbox);
             this.Controls.Add(this.replaaceLabel);
             this.Controls.Add(this.findLabel);
             this.Controls.Add(this.labelSearch);
@@ -733,6 +772,9 @@
         private System.Windows.Forms.Label labelSearch;
         private System.Windows.Forms.Label findLabel;
         private System.Windows.Forms.Label replaaceLabel;
+        private System.Windows.Forms.TextBox passwd2encdTextbox;
+        private System.Windows.Forms.Button encodeButton;
+        private System.Windows.Forms.Label passwd2encdLabel;
     }
 }
 

@@ -18,6 +18,7 @@ namespace TextHelper
 {
     public partial class Form1 : Form
     {
+        public static int pocitadlo; 
         public Form1()
         {
             InitializeComponent();
@@ -36,6 +37,7 @@ namespace TextHelper
 
         public int line = 0; // proměnná pro úchovu počtu řádků
         public int characters = 0; // počet znaků na řádku, dále vázán k proměnné line
+        public static string passwd = "";
 
         /* Třída pro funkce odstraňující přechody mezi komponentami
          * panelů nástrojů a okolním rámem editoru*/
@@ -395,5 +397,160 @@ namespace TextHelper
             else if (dialog == DialogResult.No)
                 e.Cancel = true;
         }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            string buffer = "";
+            string key = "";
+
+            Ciphre ciphre;
+
+            if (pocitadlo % 2 == 0)
+            {
+                buffer = passwd2encdTextbox.Text.ToLower().Trim();
+                passwd2encdLabel.Text = "Helpful password";
+                encodeButton.Text = "Encode";
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    switch (buffer[i])
+                    {
+                        case 'ě':
+                            passwd += 'e';
+                            break;
+                        case 'š':
+                            passwd += 's';
+                            break;
+                        case 'č':
+                            passwd += 'c';
+                            break;
+                        case 'ř':
+                            passwd += 'r';
+                            break;
+                        case 'ž':
+                            passwd += 'z';
+                            break;
+                        case 'ý':
+                            passwd += 'y';
+                            break;
+                        case 'á':
+                            passwd += 'a';
+                            break;
+                        case 'í':
+                            passwd += 'i';
+                            break;
+                        case 'é':
+                            passwd += 'e';
+                            break;
+                        default:
+                            passwd += buffer[i];
+                            break;
+                    }
+                }
+                pocitadlo++;
+            }
+            else
+            {
+                ciphre = new Ciphre();
+                buffer = passwd2encdTextbox.Text.ToLower().Trim();
+                passwd2encdLabel.Text = "Password to encode";
+                encodeButton.Text = "Submit";
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    switch (buffer[i])
+                    {
+                        case 'ě':
+                            key += 'e';
+                            break;
+                        case 'š':
+                            key += 's';
+                            break;
+                        case 'č':
+                            key += 'c';
+                            break;
+                        case 'ř':
+                            key += 'r';
+                            break;
+                        case 'ž':
+                            key += 'z';
+                            break;
+                        case 'ý':
+                            key += 'y';
+                            break;
+                        case 'á':
+                            key += 'a';
+                            break;
+                        case 'í':
+                            key += 'i';
+                            break;
+                        case 'é':
+                            key += 'e';
+                            break;
+                        default:
+                            key += buffer[i];
+                            break;
+                    }
+                }
+                pocitadlo++;
+                ciphre.helpflPasswd = key;
+                TextBoxInterface.Text = ciphre.toHexal(ciphre.securePasswd(passwd));
+                passwd = "";
+            }
+            passwd2encdTextbox.Text = "";
+        }
+    }
+
+    public class Ciphre
+    {
+        private string pomPasswd = "";
+        public string helpflPasswd = "";
+        private string hexalPattern = "0123456789ABCDEF";
+        
+        public string securePasswd(string passwd)
+        {
+            if (passwd.Length > helpflPasswd.Length)
+            {
+                string newHelpflPasswd = "";
+                for (int i = 0; i < passwd.Length; i++)
+                {
+                    newHelpflPasswd += helpflPasswd[i % helpflPasswd.Length];
+                }
+                helpflPasswd = newHelpflPasswd;
+            }
+            else if (passwd.Length < helpflPasswd.Length)
+            {
+                string newHelpflPasswd = "";
+                newHelpflPasswd = helpflPasswd.Substring(0, passwd.Length);
+                helpflPasswd = newHelpflPasswd;
+            }
+
+                for (int i = 0; i < passwd.Length; i++)
+                {
+                if ((((int)(passwd[i]) + (int)(helpflPasswd[i])) - 96) > 122)
+                    pomPasswd += (char)(((int)(passwd[i]) + (int)(helpflPasswd[i]) - 96) - 26);
+                else
+                    pomPasswd += (char)(((int)(passwd[i]) + (int)(helpflPasswd[i]) - 96));
+                }
+
+            return pomPasswd;
+        }
+
+        public string toHexal(string prepPasswd)
+        {
+            string resPasswd = "0x";
+
+            foreach (char letter in pomPasswd)
+            {
+                for (int i = 1; i < 16; i++)
+                {
+                    if (((int)letter == 0) || ((((int)(letter)) % i) == 0))
+                        resPasswd += hexalPattern[i];
+                    if (i % 6 == 0)
+                        resPasswd += "0x";
+                }
+            }
+            return resPasswd;
+        }
+
+
     }
 }
