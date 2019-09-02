@@ -91,6 +91,7 @@
             this.passwd2encdTextbox = new System.Windows.Forms.TextBox();
             this.encodeButton = new System.Windows.Forms.Button();
             this.passwd2encdLabel = new System.Windows.Forms.Label();
+            this.search_button = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -514,14 +515,14 @@
             this.searchBox.ForeColor = System.Drawing.SystemColors.WindowText;
             this.searchBox.Location = new System.Drawing.Point(67, 54);
             this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(142, 20);
+            this.searchBox.Size = new System.Drawing.Size(117, 20);
             this.searchBox.TabIndex = 12;
             this.searchBox.TextChanged += new System.EventHandler(this.searchBox_TextChanged);
             // 
             // findBox
             // 
             this.findBox.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.findBox.Location = new System.Drawing.Point(477, 42);
+            this.findBox.Location = new System.Drawing.Point(477, 47);
             this.findBox.Name = "findBox";
             this.findBox.Size = new System.Drawing.Size(100, 20);
             this.findBox.TabIndex = 13;
@@ -672,12 +673,26 @@
             this.passwd2encdLabel.TabIndex = 29;
             this.passwd2encdLabel.Text = "Password to encode";
             // 
-            // Form1
+            // search_button
+            // 
+            this.search_button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(104)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.search_button.Font = new System.Drawing.Font("Palatino Linotype", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.search_button.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.search_button.Location = new System.Drawing.Point(190, 51);
+            this.search_button.Name = "search_button";
+            this.search_button.Size = new System.Drawing.Size(83, 24);
+            this.search_button.TabIndex = 30;
+            this.search_button.Text = "Search";
+            this.search_button.UseVisualStyleBackColor = false;
+            this.search_button.Click += new System.EventHandler(this.Search_button_Click);
+            // 
+            // TxTHlpr
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(244)))), ((int)(((byte)(220)))));
             this.ClientSize = new System.Drawing.Size(890, 526);
+            this.Controls.Add(this.search_button);
             this.Controls.Add(this.passwd2encdLabel);
             this.Controls.Add(this.encodeButton);
             this.Controls.Add(this.passwd2encdTextbox);
@@ -697,7 +712,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "TxTHlpr";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -775,6 +790,7 @@
         private System.Windows.Forms.TextBox passwd2encdTextbox;
         private System.Windows.Forms.Button encodeButton;
         private System.Windows.Forms.Label passwd2encdLabel;
+        private System.Windows.Forms.Button search_button;
     }
 }
 

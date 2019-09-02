@@ -312,6 +312,7 @@ namespace TextHelper
          zarovnaný plain text, který je možné dále upravovat*/
         private void button2_Click(object sender, EventArgs e)
         {
+            TextBoxInterface.Clear();
             var webClient = new WebClient();
             var pageSourceCode = webClient.DownloadString("http://en.wikipedia.org/w/api.php?format=xml&action=query&prop=extracts&titles=" + textBox4.Text + "&redirects=true");
             XmlDocument doc = new XmlDocument();
@@ -348,9 +349,10 @@ namespace TextHelper
 
     
         /*Metoda, která po zadání hledaného výrazu vyznačí v textovém poli
-         všchny jeho výskyty*/
+         všechny jeho výskyty*/
         private void searchBox_TextChanged(object sender, EventArgs e)
         {
+            /*
             string keywords = searchBox.Text;
             MatchCollection keywordMatches = Regex.Matches(TextBoxInterface.Text, keywords);
 
@@ -377,7 +379,10 @@ namespace TextHelper
             TextBoxInterface.SelectionStart = originalIndex;
             TextBoxInterface.SelectionLength = originalLength;
             TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
+            */
+
         }
+
 
         // Tlačítko náhledu před tiskem z File Menu// 
         private void printPreviewToolStripMenuItem_Click(object sender, EventArgs e)
@@ -392,8 +397,7 @@ namespace TextHelper
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult dialog = MessageBox.Show("Do you really want to close the program?", "Exit", MessageBoxButtons.YesNo);
-            if (dialog == DialogResult.Yes)
-                Application.Exit();
+            if (dialog == DialogResult.Yes) ;
             else if (dialog == DialogResult.No)
                 e.Cancel = true;
         }
@@ -497,60 +501,27 @@ namespace TextHelper
             }
             passwd2encdTextbox.Text = "";
         }
-    }
 
-    public class Ciphre
-    {
-        private string pomPasswd = "";
-        public string helpflPasswd = "";
-        private string hexalPattern = "0123456789ABCDEF";
-        
-        public string securePasswd(string passwd)
-        {
-            if (passwd.Length > helpflPasswd.Length)
+        private void Search_button_Click(object sender, EventArgs e)
+        {;
+            TextBoxInterface.SelectionStart = 0;
+            TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
+            TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
+
+            KMPsearchPattern kMPsearchPattern = new KMPsearchPattern();
+            List<int> indexy = kMPsearchPattern.search(searchBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
+            string pattern = searchBox.Text;
+
+            foreach(int item in indexy)
             {
-                string newHelpflPasswd = "";
-                for (int i = 0; i < passwd.Length; i++)
-                {
-                    newHelpflPasswd += helpflPasswd[i % helpflPasswd.Length];
-                }
-                helpflPasswd = newHelpflPasswd;
-            }
-            else if (passwd.Length < helpflPasswd.Length)
-            {
-                string newHelpflPasswd = "";
-                newHelpflPasswd = helpflPasswd.Substring(0, passwd.Length);
-                helpflPasswd = newHelpflPasswd;
+                TextBoxInterface.SelectionStart = item;
+                TextBoxInterface.SelectionLength = pattern.Length;
+                TextBoxInterface.SelectionColor = Color.Black;
+                TextBoxInterface.SelectionBackColor = Color.DodgerBlue;
             }
 
-                for (int i = 0; i < passwd.Length; i++)
-                {
-                if ((((int)(passwd[i]) + (int)(helpflPasswd[i])) - 96) > 122)
-                    pomPasswd += (char)(((int)(passwd[i]) + (int)(helpflPasswd[i]) - 96) - 26);
-                else
-                    pomPasswd += (char)(((int)(passwd[i]) + (int)(helpflPasswd[i]) - 96));
-                }
+            
 
-            return pomPasswd;
         }
-
-        public string toHexal(string prepPasswd)
-        {
-            string resPasswd = "0x";
-
-            foreach (char letter in pomPasswd)
-            {
-                for (int i = 1; i < 16; i++)
-                {
-                    if (((int)letter == 0) || ((((int)(letter)) % i) == 0))
-                        resPasswd += hexalPattern[i];
-                    if (i % 6 == 0)
-                        resPasswd += "0x";
-                }
-            }
-            return resPasswd;
-        }
-
-
     }
 }

@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ciphre.cs" />
+    <Compile Include="KMPalgorithm.cs" />
     <Compile Include="TxTHlpr.cs">
       <SubType>Form</SubType>
     </Compile>
