@@ -10,30 +10,29 @@ namespace TextHelper
     {
         public List<int> search(string pattern, string txt)
         {
-            int M = pattern.Length;
-            int N = txt.Length;
+           
             List<int> indexes = new List<int>();
 
-            int[] lps = new int[M];
+            int[] lps = new int[pattern.Length];
             int j = 0;
 
-            computeLPSarray(pattern, M, lps);
+            computeLPSarray(pattern, pattern.Length, lps);
 
             int i = 0;
 
-            while (i < N)
+            while (i < txt.Length)
             {
                 if (pattern[j] == txt[i])
                 {
                     j++;
                     i++;
                 }
-                if (j == M)
+                if (j == pattern.Length)
                 {
                     indexes.Add(i - j); //Nalezení shody na indexu
                     j = lps[j - 1];
                 }
-                else if (i < N && pattern[j] != txt[i])
+                else if (i < txt.Length && pattern[j] != txt[i])
                 {
                     if (j != 0)
                         j = lps[j - 1];
@@ -44,29 +43,29 @@ namespace TextHelper
             return indexes;
         }
 
-        private void computeLPSarray(string pattern, int M, int[] lps)
+        private void computeLPSarray(string pattern, int patternLenth, int[] lps)
         {
-            int len = 0;
+            int length = 0;
             int i = 1;
             lps[0] = 0; // lps[0] je vždy rovno 0
 
-            while (i < M)
+            while (i < patternLenth)
             {
-                if (pattern[i] == pattern[len])
+                if (pattern[i] == pattern[length])
                 {
-                    len++;
-                    lps[i] = len;
+                    length++;
+                    lps[i] = length;
                     i++;
                 }
                 else
                 {
-                    if (len != 0)
+                    if (length != 0)
                     {
-                        len = lps[len - 1];
+                        length = lps[length - 1];
                     }
                     else
                     {
-                        lps[i] = len;
+                        lps[i] = length;
                         i++;
                     }
                 }
