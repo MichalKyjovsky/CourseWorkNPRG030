@@ -347,43 +347,6 @@ namespace TextHelper
                 TextBoxInterface.Font = fontDialog1.Font; 
         }
 
-    
-        /*Metoda, která po zadání hledaného výrazu vyznačí v textovém poli
-         všechny jeho výskyty*/
-        private void searchBox_TextChanged(object sender, EventArgs e)
-        {
-            /*
-            string keywords = searchBox.Text;
-            MatchCollection keywordMatches = Regex.Matches(TextBoxInterface.Text, keywords);
-
-            int originalIndex = TextBoxInterface.SelectionStart;
-            int originalLength = TextBoxInterface.SelectionLength;
-
-            //stops blinking
-            searchBox.Focus();
-
-            TextBoxInterface.SelectionStart = 0;
-            TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
-
-            //navolení barvy pozadí textboxu pro odstranění označení//
-            TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
-
-            foreach (Match n in keywordMatches)
-            {
-                TextBoxInterface.SelectionStart = n.Index;
-                TextBoxInterface.SelectionLength = n.Length;
-                TextBoxInterface.SelectionColor = Color.Black;
-                TextBoxInterface.SelectionBackColor = Color.DodgerBlue;
-            }
-
-            TextBoxInterface.SelectionStart = originalIndex;
-            TextBoxInterface.SelectionLength = originalLength;
-            TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
-            */
-
-        }
-
-
         // Tlačítko náhledu před tiskem z File Menu// 
         private void printPreviewToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -397,109 +360,79 @@ namespace TextHelper
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult dialog = MessageBox.Show("Do you really want to close the program?", "Exit", MessageBoxButtons.YesNo);
-            if (dialog == DialogResult.Yes) ;
+            if (dialog == DialogResult.Yes)
+            { }
             else if (dialog == DialogResult.No)
                 e.Cancel = true;
         }
 
+        private string charConventer(string buffer)
+        {
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                switch (buffer[i])
+                {
+                    case 'ě':
+                        passwd += 'e';
+                        break;
+                    case 'š':
+                        passwd += 's';
+                        break;
+                    case 'č':
+                        passwd += 'c';
+                        break;
+                    case 'ř':
+                        passwd += 'r';
+                        break;
+                    case 'ž':
+                        passwd += 'z';
+                        break;
+                    case 'ý':
+                        passwd += 'y';
+                        break;
+                    case 'á':
+                        passwd += 'a';
+                        break;
+                    case 'í':
+                        passwd += 'i';
+                        break;
+                    case 'é':
+                        passwd += 'e';
+                        break;
+                    default:
+                        passwd += buffer[i];
+                        break;
+                }
+            }
+            return passwd;
+        }
+
         private void Button1_Click(object sender, EventArgs e)
         {
-            string buffer = "";
+            string password = "";
             string key = "";
 
             Ciphre ciphre;
 
             if (pocitadlo % 2 == 0)
             {
-                buffer = passwd2encdTextbox.Text.ToLower().Trim();
                 passwd2encdLabel.Text = "Helpful password";
                 encodeButton.Text = "Encode";
-                for (int i = 0; i < buffer.Length; i++)
-                {
-                    switch (buffer[i])
-                    {
-                        case 'ě':
-                            passwd += 'e';
-                            break;
-                        case 'š':
-                            passwd += 's';
-                            break;
-                        case 'č':
-                            passwd += 'c';
-                            break;
-                        case 'ř':
-                            passwd += 'r';
-                            break;
-                        case 'ž':
-                            passwd += 'z';
-                            break;
-                        case 'ý':
-                            passwd += 'y';
-                            break;
-                        case 'á':
-                            passwd += 'a';
-                            break;
-                        case 'í':
-                            passwd += 'i';
-                            break;
-                        case 'é':
-                            passwd += 'e';
-                            break;
-                        default:
-                            passwd += buffer[i];
-                            break;
-                    }
-                }
-                pocitadlo++;
+                password = charConventer(passwd2encdTextbox.Text.ToLower().Trim());
             }
             else
             {
                 ciphre = new Ciphre();
-                buffer = passwd2encdTextbox.Text.ToLower().Trim();
+                key = charConventer(passwd2encdTextbox.Text.ToLower().Trim());
+                
                 passwd2encdLabel.Text = "Password to encode";
                 encodeButton.Text = "Submit";
-                for (int i = 0; i < buffer.Length; i++)
-                {
-                    switch (buffer[i])
-                    {
-                        case 'ě':
-                            key += 'e';
-                            break;
-                        case 'š':
-                            key += 's';
-                            break;
-                        case 'č':
-                            key += 'c';
-                            break;
-                        case 'ř':
-                            key += 'r';
-                            break;
-                        case 'ž':
-                            key += 'z';
-                            break;
-                        case 'ý':
-                            key += 'y';
-                            break;
-                        case 'á':
-                            key += 'a';
-                            break;
-                        case 'í':
-                            key += 'i';
-                            break;
-                        case 'é':
-                            key += 'e';
-                            break;
-                        default:
-                            key += buffer[i];
-                            break;
-                    }
-                }
-                pocitadlo++;
                 ciphre.helpflPasswd = key;
                 TextBoxInterface.Text = ciphre.toHexal(ciphre.securePasswd(passwd));
                 passwd = "";
             }
             passwd2encdTextbox.Text = "";
+            pocitadlo++;
         }
 
         private void Search_button_Click(object sender, EventArgs e)
