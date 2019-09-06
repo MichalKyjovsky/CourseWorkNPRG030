@@ -331,7 +331,7 @@ namespace TextHelper
             TextBoxInterface.Clear();
             WebClient client = new WebClient();
 
-            using (Stream stream = client.OpenRead("http://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=1&titles=" + textBox4.Text.ToLower())) 
+            using (Stream stream = client.OpenRead("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&titles=" + textBox4.Text)) 
             using (StreamReader reader = new StreamReader(stream))
             {
                     JsonSerializer ser = new JsonSerializer();
