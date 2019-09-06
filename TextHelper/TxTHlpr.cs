@@ -337,9 +337,15 @@ namespace TextHelper
                     JsonSerializer ser = new JsonSerializer();
                     Result result = ser.Deserialize<Result>(new JsonTextReader(reader));
 
-                    foreach (Page page in result.query.pages.Values)
-                        TextBoxInterface.Text = page.extract;
-                
+
+                foreach (Page page in result.query.pages.Values)
+                {
+                    TextBoxInterface.Text = page.extract;
+                }
+                if (TextBoxInterface.Text == "")
+                {
+                    TextBoxInterface.Text = "Page you are looking for may does not exist.\nCheck correctness of your request.";
+                }
             }
             }
 
