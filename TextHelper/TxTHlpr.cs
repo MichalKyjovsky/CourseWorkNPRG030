@@ -13,16 +13,19 @@ using System.Web;
 using System.Net; 
 using System.Xml;
 using System.Drawing.Printing;
+using Newtonsoft.Json;
 
 namespace TextHelper
 {
     public partial class TxTHlpr : Form
     {
-        public static int pocitadlo; 
+        public static int pocitadlo;
+        public KMPsearchPattern kmp = new KMPsearchPattern();
         public TxTHlpr()
         {
             InitializeComponent();
             this.ActiveControl = TextBoxInterface;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             /* Odstranění orámečkování z obou panelů nástrojů,
             aby nevznikal přechod mezi form1 a vnitřním prostředím */
             toolStrip1.Renderer = new ToolStripStripeRemoval();
@@ -297,11 +300,24 @@ namespace TextHelper
          znakem či slovem zadaným do textového pole REPLACE*/
         private void button1_Click_1(object sender, EventArgs e)
         {
+            TextBoxInterface.SelectionStart = 0;
+            TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
             if (findBox.Text != null && !string.IsNullOrWhiteSpace(findBox.Text) && replaceBox.Text != null && !string.IsNullOrWhiteSpace(replaceBox.Text))
             {
+                List<int> indexes = new List<int>(); 
+                    indexes = kmp.search(findBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
+
+                foreach (int item in indexes)
+                {
+                    TextBoxInterface.SelectionStart = item;
+                    TextBoxInterface.SelectionLength = findBox.Text.Length;
+                    TextBoxInterface.SelectedText = replaceBox.Text; 
+                }
+
+                /*
                 TextBoxInterface.Text = TextBoxInterface.Text.Replace(findBox.Text, replaceBox.Text);
                 findBox.Text = "";
-                replaceBox.Text = "";
+                replaceBox.Text = "";*/
             }
         }
 
@@ -313,27 +329,19 @@ namespace TextHelper
         private void button2_Click(object sender, EventArgs e)
         {
             TextBoxInterface.Clear();
-            var webClient = new WebClient();
-            var pageSourceCode = webClient.DownloadString("http://en.wikipedia.org/w/api.php?format=xml&action=query&prop=extracts&titles=" + textBox4.Text + "&redirects=true");
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(pageSourceCode);
+            WebClient client = new WebClient();
 
-            var fnode = doc.GetElementsByTagName("extract")[0];
+            using (Stream stream = client.OpenRead("http://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=1&titles=" + textBox4.Text.ToLower())) 
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                    JsonSerializer ser = new JsonSerializer();
+                    Result result = ser.Deserialize<Result>(new JsonTextReader(reader));
 
-            try
-            {
-                string ss = fnode.InnerText;
-                Regex regex = new Regex("\\<[^\\>]*\\>");
-                string.Format("Before:{0}", ss);
-                ss = regex.Replace(ss, string.Empty);
-                string result = String.Format(ss);
-                TextBoxInterface.Text += result; 
+                    foreach (Page page in result.query.pages.Values)
+                        TextBoxInterface.Text = page.extract;
+                
             }
-            catch (Exception)
-            {
-                TextBoxInterface.Text = "error"; 
             }
-        }
 
         /* Tlačítko volby fontu, velikosti písma a 
         jeho modifikace ze základní sady MS, po stisku
@@ -436,7 +444,7 @@ namespace TextHelper
         }
 
         private void Search_button_Click(object sender, EventArgs e)
-        {;
+        {
             TextBoxInterface.SelectionStart = 0;
             TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
             TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
