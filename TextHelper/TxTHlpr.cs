@@ -25,7 +25,7 @@ namespace TextHelper
         {
             InitializeComponent();
             this.ActiveControl = TextBoxInterface;
-            FormBorderStyle = FormBorderStyle.FixedDialog;
+            
             /* Odstranění orámečkování z obou panelů nástrojů,
             aby nevznikal přechod mezi form1 a vnitřním prostředím */
             toolStrip1.Renderer = new ToolStripStripeRemoval();
