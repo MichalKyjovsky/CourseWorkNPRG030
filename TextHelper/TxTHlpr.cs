@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Net; 
+using System.Net;
 using System.Xml;
 using System.Drawing.Printing;
 using Newtonsoft.Json;
@@ -61,14 +61,14 @@ namespace TextHelper
         {
             TextBoxInterface.Clear();
         }
-        
+
         //Tlačítko pro otevření nového či načtení existujícího souboru//
         private void openToolStripButton_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
             openFile.Title = "Open a file..";
 
-            if (openFile.ShowDialog() == DialogResult.OK) 
+            if (openFile.ShowDialog() == DialogResult.OK)
             {
                 TextBoxInterface.Clear();
                 using (StreamReader sr = new StreamReader(openFile.FileName))
@@ -79,21 +79,25 @@ namespace TextHelper
             }
         }
 
+            private void FileSaving()
+            {
+                SaveFileDialog saveFile = new SaveFileDialog();
+                saveFile.Title = "Save file as..";
+                if (saveFile.ShowDialog() == DialogResult.OK)
+                {
+                    StreamWriter txtO = new StreamWriter(saveFile.FileName);
+                    txtO.Write(TextBoxInterface.Text);
+                    txtO.Close();
+                }
+            }
+
         //Tlačítko uložení souboru popř. uložení jako..//
         private void saveToolStripButton_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFile = new SaveFileDialog();
-            saveFile.Title = "Save file as..";
-            if (saveFile.ShowDialog() == DialogResult.OK)
-            {
-                StreamWriter txtO = new StreamWriter(saveFile.FileName);
-                txtO.Write(TextBoxInterface.Text);
-                txtO.Close(); 
-            }
+            FileSaving();
         }
-        
-        //Tlačítko tisku souboru, vyvolá diaologové okno pro možnosti tisku//
-        private void printToolStripButton_Click(object sender, EventArgs e)
+
+        private void PrintingAFile()
         {
             PrintDocument doc = new PrintDocument();
             PrintDialog pd = new PrintDialog();
@@ -105,7 +109,12 @@ namespace TextHelper
             {
                 doc.Print();
             }
+        }
 
+        //Tlačítko tisku souboru, vyvolá diaologové okno pro možnosti tisku//
+        private void printToolStripButton_Click(object sender, EventArgs e)
+        {
+            PrintingAFile();
         }
 
         /*Tlačítko na vystřižení označené části textu, po označení textu
@@ -168,7 +177,7 @@ namespace TextHelper
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit(); 
+            Application.Exit();
         }
 
         /*Následují opět tlačítka z panelu nástrojů s vypsanou funkcí,
@@ -205,7 +214,7 @@ namespace TextHelper
         }
 
 
-       //Label pro zobrazení řádků a znaků na řádce //
+        //Label pro zobrazení řádků a znaků na řádce //
         private void toolStripStatusLabel1_Click(object sender, EventArgs e)
         {
 
@@ -238,7 +247,7 @@ namespace TextHelper
         private void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
             searchBox.Focus();
-            
+
         }
 
         private void findAndReplaceToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -249,9 +258,9 @@ namespace TextHelper
         /* Metoda, která umožnuje tisk z náhledu. Nutné dodělání CRLF 
         a zobrazení popřípadě tisk více stránek*/
         private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
-       {
+        {
             e.Graphics.DrawString(TextBoxInterface.Text, new Font("Tie New Roman", 14, FontStyle.Bold), Brushes.Black, new PointF(100, 100));
-       } 
+        }
 
         /*Metoda pro tisk obsahu textového pole vyvolána tlačítkem tiskárna,
          nikoliv tlačítkem náhled (pracuje s jiným dialogovým oknem)*/
@@ -267,18 +276,18 @@ namespace TextHelper
                 {
                     charpos++;
                     y += 20;
-                    x = 10; 
+                    x = 10;
                 }
                 else if (TextBoxInterface.Text[charpos] == '\r')
                 {
-                    charpos++; 
+                    charpos++;
                 }
                 else
                 {
                     TextBoxInterface.Select(charpos, 1);
                     e.Graphics.DrawString(TextBoxInterface.SelectedText, TextBoxInterface.SelectionFont, new SolidBrush(TextBoxInterface.SelectionColor), new PointF(x, y));
                     x = x + 8;
-                    charpos++; 
+                    charpos++;
                 }
             }
         }
@@ -292,7 +301,7 @@ namespace TextHelper
         //Obsah vyhledávacího pole REPLACE, jeho reakce na událost//
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         /*Tlačítko které po zadání hledaného znaku popř. slova do 
@@ -304,20 +313,16 @@ namespace TextHelper
             TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
             if (findBox.Text != null && !string.IsNullOrWhiteSpace(findBox.Text) && replaceBox.Text != null && !string.IsNullOrWhiteSpace(replaceBox.Text))
             {
-                List<int> indexes = new List<int>(); 
-                    indexes = kmp.search(findBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
+                List<int> indexes = new List<int>();
+                indexes = kmp.search(findBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
 
                 foreach (int item in indexes)
                 {
                     TextBoxInterface.SelectionStart = item;
                     TextBoxInterface.SelectionLength = findBox.Text.Length;
-                    TextBoxInterface.SelectedText = replaceBox.Text; 
+                    TextBoxInterface.SelectedText = replaceBox.Text;
                 }
 
-                /*
-                TextBoxInterface.Text = TextBoxInterface.Text.Replace(findBox.Text, replaceBox.Text);
-                findBox.Text = "";
-                replaceBox.Text = "";*/
             }
         }
 
@@ -331,11 +336,11 @@ namespace TextHelper
             TextBoxInterface.Clear();
             WebClient client = new WebClient();
 
-            using (Stream stream = client.OpenRead("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&titles=" + textBox4.Text)) 
+            using (Stream stream = client.OpenRead("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&titles=" + textBox4.Text))
             using (StreamReader reader = new StreamReader(stream))
             {
-                    JsonSerializer ser = new JsonSerializer();
-                    Result result = ser.Deserialize<Result>(new JsonTextReader(reader));
+                JsonSerializer ser = new JsonSerializer();
+                Result result = ser.Deserialize<Result>(new JsonTextReader(reader));
 
 
                 foreach (Page page in result.query.pages.Values)
@@ -347,7 +352,7 @@ namespace TextHelper
                     TextBoxInterface.Text = "Page you are looking for may does not exist.\nCheck correctness of your request.";
                 }
             }
-            }
+        }
 
         /* Tlačítko volby fontu, velikosti písma a 
         jeho modifikace ze základní sady MS, po stisku
@@ -358,7 +363,7 @@ namespace TextHelper
         {
             DialogResult fontResult = fontDialog1.ShowDialog();
             if (fontResult == DialogResult.OK)
-                TextBoxInterface.Font = fontDialog1.Font; 
+                TextBoxInterface.Font = fontDialog1.Font;
         }
 
         // Tlačítko náhledu před tiskem z File Menu// 
@@ -366,7 +371,7 @@ namespace TextHelper
         {
             if (printPreviewDialog1.ShowDialog() == DialogResult.OK)
             {
-                printDocument1.Print(); 
+                printDocument1.Print();
             }
         }
 
@@ -438,7 +443,7 @@ namespace TextHelper
             {
                 ciphre = new Ciphre();
                 key = charConventer(passwd2encdTextbox.Text.ToLower().Trim());
-                
+
                 passwd2encdLabel.Text = "Password to encode";
                 encodeButton.Text = "Submit";
                 ciphre.helpflPasswd = key;
@@ -459,7 +464,7 @@ namespace TextHelper
             List<int> indexy = kMPsearchPattern.search(searchBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
             string pattern = searchBox.Text;
 
-            foreach(int item in indexy)
+            foreach (int item in indexy)
             {
                 TextBoxInterface.SelectionStart = item;
                 TextBoxInterface.SelectionLength = pattern.Length;
@@ -467,8 +472,18 @@ namespace TextHelper
                 TextBoxInterface.SelectionBackColor = Color.DodgerBlue;
             }
 
-            
 
+
+        }
+
+        private void PrintToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PrintingAFile();
+        }
+
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileSaving();
         }
     }
 }
