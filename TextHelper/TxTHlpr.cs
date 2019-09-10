@@ -311,14 +311,9 @@ namespace TextHelper
             TextBoxInterface.SelectionStart = 0;
             TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
             TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
-            KMPsearchPattern kmp2 = new KMPsearchPattern();
-            TextBoxInterface.SelectionStart = 0;
-            TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
+            
             if (findBox.Text != null && !string.IsNullOrWhiteSpace(findBox.Text) && replaceBox.Text != null && !string.IsNullOrWhiteSpace(replaceBox.Text))
             {
-                List<int> indexes = new List<int>();
-                indexes = kmp2.search(findBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
-
                 TextBoxInterface.Text = TextBoxInterface.Text.Replace(findBox.Text, replaceBox.Text);
             }
         }
