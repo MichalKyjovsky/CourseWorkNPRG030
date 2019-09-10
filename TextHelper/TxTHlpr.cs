@@ -20,7 +20,6 @@ namespace TextHelper
     public partial class TxTHlpr : Form
     {
         public static int pocitadlo;
-        public KMPsearchPattern kmp = new KMPsearchPattern();
         public TxTHlpr()
         {
             InitializeComponent();
@@ -311,18 +310,16 @@ namespace TextHelper
         {
             TextBoxInterface.SelectionStart = 0;
             TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
+            TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
+            KMPsearchPattern kmp2 = new KMPsearchPattern();
+            TextBoxInterface.SelectionStart = 0;
+            TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
             if (findBox.Text != null && !string.IsNullOrWhiteSpace(findBox.Text) && replaceBox.Text != null && !string.IsNullOrWhiteSpace(replaceBox.Text))
             {
                 List<int> indexes = new List<int>();
-                indexes = kmp.search(findBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
+                indexes = kmp2.search(findBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
 
-                foreach (int item in indexes)
-                {
-                    TextBoxInterface.SelectionStart = item;
-                    TextBoxInterface.SelectionLength = findBox.Text.Length;
-                    TextBoxInterface.SelectedText = replaceBox.Text;
-                }
-
+                TextBoxInterface.Text = TextBoxInterface.Text.Replace(findBox.Text, replaceBox.Text);
             }
         }
 
@@ -333,10 +330,11 @@ namespace TextHelper
          zarovnaný plain text, který je možné dále upravovat*/
         private void button2_Click(object sender, EventArgs e)
         {
+            
             TextBoxInterface.Clear();
             WebClient client = new WebClient();
 
-            using (Stream stream = client.OpenRead("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&titles=" + textBox4.Text))
+            using (Stream stream = client.OpenRead("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&titles=" + textBox4.Text + "&redirects=true"))
             using (StreamReader reader = new StreamReader(stream))
             {
                 JsonSerializer ser = new JsonSerializer();
@@ -346,10 +344,11 @@ namespace TextHelper
                 foreach (Page page in result.query.pages.Values)
                 {
                     TextBoxInterface.Text = page.extract;
-                }
-                if (TextBoxInterface.Text == "")
-                {
-                    TextBoxInterface.Text = "Page you are looking for may does not exist.\nCheck correctness of your request.";
+
+                    if (TextBoxInterface.Text == "")
+                    {
+                        TextBoxInterface.Text = "Page you are looking for may does not exist.\nCheck correctness of your request.";
+                    }
                 }
             }
         }
@@ -456,24 +455,33 @@ namespace TextHelper
 
         private void Search_button_Click(object sender, EventArgs e)
         {
-            TextBoxInterface.SelectionStart = 0;
-            TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
-            TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
-
-            KMPsearchPattern kMPsearchPattern = new KMPsearchPattern();
-            List<int> indexy = kMPsearchPattern.search(searchBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
-            string pattern = searchBox.Text;
-
-            foreach (int item in indexy)
+            if (searchBox.Text == "")
             {
-                TextBoxInterface.SelectionStart = item;
-                TextBoxInterface.SelectionLength = pattern.Length;
-                TextBoxInterface.SelectionColor = Color.Black;
-                TextBoxInterface.SelectionBackColor = Color.DodgerBlue;
+                DialogResult dialog = MessageBox.Show("Fill your search request", "Continue", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                if (dialog == DialogResult.Yes)
+                {
+                    return;
+                }
+
             }
+            else
+            {
+                TextBoxInterface.SelectionStart = 0;
+                TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
+                TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
 
+                KMPsearchPattern kMPsearchPattern = new KMPsearchPattern();
+                List<int> indexy = kMPsearchPattern.search(searchBox.Text.ToLower(), TextBoxInterface.Text.ToLower());
+                string pattern = searchBox.Text;
 
-
+                foreach (int item in indexy)
+                {
+                    TextBoxInterface.SelectionStart = item;
+                    TextBoxInterface.SelectionLength = pattern.Length;
+                    TextBoxInterface.SelectionColor = Color.Black;
+                    TextBoxInterface.SelectionBackColor = Color.DodgerBlue;
+                }
+            }
         }
 
         private void PrintToolStripMenuItem_Click(object sender, EventArgs e)
@@ -484,6 +492,11 @@ namespace TextHelper
         private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FileSaving();
+        }
+
+        private void SearchBox_TextChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }
