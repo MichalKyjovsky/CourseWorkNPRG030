@@ -308,13 +308,32 @@ namespace TextHelper
          znakem či slovem zadaným do textového pole REPLACE*/
         private void button1_Click_1(object sender, EventArgs e)
         {
-            TextBoxInterface.SelectionStart = 0;
-            TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
-            TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
-            
-            if (findBox.Text != null && !string.IsNullOrWhiteSpace(findBox.Text) && replaceBox.Text != null && !string.IsNullOrWhiteSpace(replaceBox.Text))
+            if (findBox.Text == "" || replaceBox.Text == "")
             {
-                TextBoxInterface.Text = TextBoxInterface.Text.Replace(findBox.Text, replaceBox.Text);
+                DialogResult dialog = MessageBox.Show("Fill your search request!", "Continue", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (dialog == DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+            else if(TextBoxInterface.Text == "")
+            {
+                DialogResult dialog = MessageBox.Show("There is nothing to look for!", "Continue", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (dialog == DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                TextBoxInterface.SelectionStart = 0;
+                TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
+                TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
+
+                if (findBox.Text != null && !string.IsNullOrWhiteSpace(findBox.Text) && replaceBox.Text != null && !string.IsNullOrWhiteSpace(replaceBox.Text))
+                {
+                    TextBoxInterface.Text = TextBoxInterface.Text.Replace(findBox.Text, replaceBox.Text);
+                }
             }
         }
 
@@ -325,27 +344,35 @@ namespace TextHelper
          zarovnaný plain text, který je možné dále upravovat*/
         private void button2_Click(object sender, EventArgs e)
         {
-            
+            if(textBox4.Text == "")
+            {
+                DialogResult dialog = MessageBox.Show("Fill your search request", "Continue", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (dialog == DialogResult.Yes)
+                {
+                    return;
+                }
+            }else
+            {  
             TextBoxInterface.Clear();
             WebClient client = new WebClient();
-
-            using (Stream stream = client.OpenRead("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&titles=" + textBox4.Text + "&redirects=true"))
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                JsonSerializer ser = new JsonSerializer();
-                Result result = ser.Deserialize<Result>(new JsonTextReader(reader));
-
-
-                foreach (Page page in result.query.pages.Values)
+                using (Stream stream = client.OpenRead("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&titles=" + textBox4.Text + "&redirects=true"))
+                using (StreamReader reader = new StreamReader(stream))
                 {
-                    TextBoxInterface.Text = page.extract;
+                    JsonSerializer ser = new JsonSerializer();
+                    Result result = ser.Deserialize<Result>(new JsonTextReader(reader));
 
-                    if (TextBoxInterface.Text == "")
+
+                    foreach (Page page in result.query.pages.Values)
                     {
-                        TextBoxInterface.Text = "Page you are looking for may does not exist.\nCheck correctness of your request.";
+                        TextBoxInterface.Text = page.extract;
+
+                        if (TextBoxInterface.Text == "")
+                        {
+                            TextBoxInterface.Text = "Page you are looking for may does not exist.\nCheck correctness of your request.";
+                        }
                     }
                 }
-            }
+                }
         }
 
         /* Tlačítko volby fontu, velikosti písma a 
@@ -422,32 +449,42 @@ namespace TextHelper
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            string password = "";
-            string key = "";
-
-            Ciphre ciphre;
-
-            if (pocitadlo % 2 == 0)
+            if (passwd2encdTextbox.Text == "")
             {
-                passwd2encdLabel.Text = "Helpful password";
-                encodeButton.Text = "Encode";
-                password = charConventer(passwd2encdTextbox.Text.ToLower().Trim());
+                DialogResult dialog = MessageBox.Show("Input your password!", "Continue", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (dialog == DialogResult.Yes)
+                {
+                    return;
+                }
             }
             else
             {
-                ciphre = new Ciphre();
-                key = charConventer(passwd2encdTextbox.Text.ToLower().Trim());
+                string password = "";
+                string key = "";
 
-                passwd2encdLabel.Text = "Password to encode";
-                encodeButton.Text = "Submit";
-                ciphre.helpflPasswd = key;
-                TextBoxInterface.Text = ciphre.toHexal(ciphre.securePasswd(passwd));
-                passwd = "";
+                Ciphre ciphre;
+
+                if (pocitadlo % 2 == 0)
+                {
+                    passwd2encdLabel.Text = "Helpful password";
+                    encodeButton.Text = "Encode";
+                    password = charConventer(passwd2encdTextbox.Text.ToLower().Trim());
+                }
+                else
+                {
+                    ciphre = new Ciphre();
+                    key = charConventer(passwd2encdTextbox.Text.ToLower().Trim());
+
+                    passwd2encdLabel.Text = "Password to encode";
+                    encodeButton.Text = "Submit";
+                    ciphre.helpflPasswd = key;
+                    TextBoxInterface.Text = ciphre.toHexal(ciphre.securePasswd(passwd));
+                    passwd = "";
+                }
+                passwd2encdTextbox.Text = "";
+                pocitadlo++;
             }
-            passwd2encdTextbox.Text = "";
-            pocitadlo++;
         }
-
         private void Search_button_Click(object sender, EventArgs e)
         {
             if (searchBox.Text == "")
