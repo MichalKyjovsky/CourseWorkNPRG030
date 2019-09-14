@@ -541,5 +541,13 @@ namespace TextHelper
         {
             
         }
+
+        private void unselectButton_click(object sender, EventArgs e)
+        {
+            TextBoxInterface.SelectionStart = 0;
+            TextBoxInterface.SelectionLength = TextBoxInterface.Text.Length;
+            TextBoxInterface.SelectionBackColor = Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(245)))), ((int)(((byte)(238)))));
+
+        }
     }
 }
