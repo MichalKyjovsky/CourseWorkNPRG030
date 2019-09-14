@@ -37,7 +37,6 @@ namespace TextHelper
                 else
                     pomPasswd += (char)(((int)(passwd[i]) + (int)(helpflPasswd[i]) - 96));
             }
-
             return pomPasswd;
         }
 

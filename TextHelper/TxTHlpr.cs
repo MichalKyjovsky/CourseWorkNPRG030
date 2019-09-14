@@ -47,8 +47,7 @@ namespace TextHelper
         {
             public ToolStripStripeRemoval() { }
 
-            protected override void
-                OnRenderToolStripBorder(ToolStripRenderEventArgs e)
+            protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
             {
 
             }
@@ -82,6 +81,7 @@ namespace TextHelper
             {
                 SaveFileDialog saveFile = new SaveFileDialog();
                 saveFile.Title = "Save file as..";
+
                 if (saveFile.ShowDialog() == DialogResult.OK)
                 {
                     StreamWriter txtO = new StreamWriter(saveFile.FileName);
@@ -104,6 +104,7 @@ namespace TextHelper
             ppd.Document = doc;
             pd.Document = doc;
             doc.PrintPage += new PrintPageEventHandler(doc_PrintPage);
+
             if (pd.ShowDialog() == DialogResult.OK)
             {
                 doc.Print();
@@ -351,16 +352,16 @@ namespace TextHelper
                 {
                     return;
                 }
-            }else
+            }
+            else
             {  
-            TextBoxInterface.Clear();
-            WebClient client = new WebClient();
+                TextBoxInterface.Clear();
+                WebClient client = new WebClient();
                 using (Stream stream = client.OpenRead("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&explaintext=&titles=" + textBox4.Text + "&redirects=true"))
                 using (StreamReader reader = new StreamReader(stream))
                 {
                     JsonSerializer ser = new JsonSerializer();
                     Result result = ser.Deserialize<Result>(new JsonTextReader(reader));
-
 
                     foreach (Page page in result.query.pages.Values)
                     {
@@ -372,7 +373,7 @@ namespace TextHelper
                         }
                     }
                 }
-                }
+            }
         }
 
         /* Tlačítko volby fontu, velikosti písma a 
@@ -383,8 +384,12 @@ namespace TextHelper
         private void bFont_Click(object sender, EventArgs e)
         {
             DialogResult fontResult = fontDialog1.ShowDialog();
+
             if (fontResult == DialogResult.OK)
+            {
                 TextBoxInterface.Font = fontDialog1.Font;
+
+            }
         }
 
         // Tlačítko náhledu před tiskem z File Menu// 
@@ -400,10 +405,14 @@ namespace TextHelper
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult dialog = MessageBox.Show("Do you really want to close the program?", "Exit", MessageBoxButtons.YesNo);
+
             if (dialog == DialogResult.Yes)
-            { }
+            {
+            }
             else if (dialog == DialogResult.No)
+            {
                 e.Cancel = true;
+            }
         }
 
         private string charConventer(string buffer)
@@ -452,6 +461,7 @@ namespace TextHelper
             if (passwd2encdTextbox.Text == "")
             {
                 DialogResult dialog = MessageBox.Show("Input your password!", "Continue", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 if (dialog == DialogResult.Yes)
                 {
                     return;
@@ -485,6 +495,7 @@ namespace TextHelper
                 pocitadlo++;
             }
         }
+
         private void Search_button_Click(object sender, EventArgs e)
         {
             if (searchBox.Text == "")

@@ -17,7 +17,6 @@ namespace TextHelper
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new TxTHlpr());
-
         }
     }
 }
